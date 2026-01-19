@@ -22,6 +22,7 @@ export class ApiKeyRepo {
       .selectAll()
       .where('workspaceId', '=', workspaceId)
       .where('deletedAt', 'is', null)
+      .orderBy('createdAt', 'desc')
       .execute();
   }
 
