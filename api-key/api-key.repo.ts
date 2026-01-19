@@ -27,7 +27,7 @@ export class ApiKeyRepo {
 
   async create(data: {
     name: string;
-    userId: string;
+    creatorId: string;
     workspaceId: string;
     token: string;
     expiresAt?: Date;

@@ -18,7 +18,7 @@ export class ApiKeyService {
     }
     // For non-admins, only return their own keys
     const allKeys = await this.apiKeyRepo.findByWorkspaceId(workspaceId);
-    return allKeys.filter((key) => key.creatorId === userId);
+    return allKeys.filter((key) => key.userId === userId);
   }
 
   async createApiKey(
@@ -42,7 +42,7 @@ export class ApiKeyService {
 
     return this.apiKeyRepo.create({
       name: data.name,
-      creatorId: userId,
+      userId,
       workspaceId,
       token,
       expiresAt: data.expiresAt,

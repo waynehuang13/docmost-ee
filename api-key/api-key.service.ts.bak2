@@ -42,7 +42,7 @@ export class ApiKeyService {
 
     return this.apiKeyRepo.create({
       name: data.name,
-      creatorId: userId,
+      userId,
       workspaceId,
       token,
       expiresAt: data.expiresAt,
