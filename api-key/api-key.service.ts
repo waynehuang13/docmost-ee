@@ -31,22 +31,28 @@ export class ApiKeyService {
       throw new Error('User not found');
     }
 
-    // Generate API key token
-    const apiKeyId = nanoIdGen(32);
+    // Create API key record first
+    const apiKey = await this.apiKeyRepo.create({
+      name: data.name,
+      creatorId: userId,
+      workspaceId,
+      expiresAt: data.expiresAt,
+    });
+
+    // Generate JWT token using the API key ID
     const token = await this.tokenService.generateApiToken({
-      apiKeyId,
+      apiKeyId: apiKey.id,
       user,
       workspaceId,
       expiresIn: data.expiresAt ? undefined : '1y',
     });
 
-    return this.apiKeyRepo.create({
-      name: data.name,
-      creatorId: userId,
-      workspaceId,
-      token,
-      expiresAt: data.expiresAt,
-    });
+    // Return both the API key record and the token
+    // Note: token is only returned once during creation
+    return {
+      ...apiKey,
+      token, // This token should be saved by the user as it won't be shown again
+    };
   }
 
   async updateApiKey(id: string, data: { name: string }) {

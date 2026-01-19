@@ -29,7 +29,6 @@ export class ApiKeyRepo {
     name: string;
     creatorId: string;
     workspaceId: string;
-    token: string;
     expiresAt?: Date;
   }) {
     return await this.db
