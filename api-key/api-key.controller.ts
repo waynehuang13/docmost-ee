@@ -73,15 +73,15 @@ export class ApiKeyController {
 
   @Post('revoke')
   async revokeApiKey(
-    @Body() data: { id: string },
+    @Body() data: { apiKeyId: string },
     @AuthUser() user: User,
     @AuthWorkspace() workspace: Workspace,
   ) {
     console.log(
       '[API Key Controller] Revoke request received for ID:',
-      data.id,
+      data.apiKeyId,
     );
-    await this.apiKeyService.revokeApiKey(data.id);
+    await this.apiKeyService.revokeApiKey(data.apiKeyId);
 
     // Return updated list of API keys after revocation
     const isAdmin = user.role === 'admin' || user.role === 'owner';
