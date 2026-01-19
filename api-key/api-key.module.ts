@@ -2,12 +2,13 @@ import { Module } from '@nestjs/common';
 import { ApiKeyService } from './api-key.service';
 import { ApiKeyController } from './api-key.controller';
 import { ApiKeyRepo } from './api-key.repo';
-import { TokenService } from '../../core/auth/services/token.service';
+import { TokenModule } from '../../core/auth/token.module';
 import { UserRepo } from '@docmost/db/repos/user/user.repo';
 
 @Module({
+  imports: [TokenModule],
   controllers: [ApiKeyController],
-  providers: [ApiKeyService, ApiKeyRepo, TokenService, UserRepo],
+  providers: [ApiKeyService, ApiKeyRepo, UserRepo],
   exports: [ApiKeyService],
 })
 export class ApiKeyModule {}
