@@ -72,14 +72,46 @@ export class ApiKeyController {
   }
 
   @Post('revoke')
-  async revokeApiKey(@Body() data: { id: string }) {
+  async revokeApiKey(
+    @Body() data: { id: string },
+    @AuthUser() user: User,
+    @AuthWorkspace() workspace: Workspace,
+  ) {
     await this.apiKeyService.revokeApiKey(data.id);
-    return { success: true };
+
+    // Return updated list of API keys after revocation
+    const isAdmin = user.role === 'admin' || user.role === 'owner';
+    const apiKeys = await this.apiKeyService.getApiKeys(
+      user.id,
+      workspace.id,
+      isAdmin,
+    );
+
+    return {
+      success: true,
+      items: apiKeys,
+    };
   }
 
   @Delete(':id')
-  async deleteApiKey(@Param('id') id: string) {
+  async deleteApiKey(
+    @Param('id') id: string,
+    @AuthUser() user: User,
+    @AuthWorkspace() workspace: Workspace,
+  ) {
     await this.apiKeyService.revokeApiKey(id);
-    return { success: true };
+
+    // Return updated list of API keys after deletion
+    const isAdmin = user.role === 'admin' || user.role === 'owner';
+    const apiKeys = await this.apiKeyService.getApiKeys(
+      user.id,
+      workspace.id,
+      isAdmin,
+    );
+
+    return {
+      success: true,
+      items: apiKeys,
+    };
   }
 }
