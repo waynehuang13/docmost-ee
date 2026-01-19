@@ -60,6 +60,8 @@ export class ApiKeyService {
   }
 
   async revokeApiKey(id: string) {
+    console.log('[API Key Service] Revoking API key:', id);
     await this.apiKeyRepo.delete(id);
+    console.log('[API Key Service] API key revoked successfully');
   }
 }

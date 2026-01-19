@@ -77,6 +77,10 @@ export class ApiKeyController {
     @AuthUser() user: User,
     @AuthWorkspace() workspace: Workspace,
   ) {
+    console.log(
+      '[API Key Controller] Revoke request received for ID:',
+      data.id,
+    );
     await this.apiKeyService.revokeApiKey(data.id);
 
     // Return updated list of API keys after revocation
@@ -87,6 +91,11 @@ export class ApiKeyController {
       isAdmin,
     );
 
+    console.log(
+      '[API Key Controller] Returning updated list with',
+      apiKeys.length,
+      'keys',
+    );
     return {
       success: true,
       items: apiKeys,
