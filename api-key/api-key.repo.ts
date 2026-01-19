@@ -26,11 +26,12 @@ export class ApiKeyRepo {
       .execute();
   }
 
-  async findByNameAndWorkspace(name: string, workspaceId: string) {
+  async findByNameAndUser(name: string, userId: string, workspaceId: string) {
     return await this.db
       .selectFrom('apiKeys')
       .selectAll()
       .where('name', '=', name)
+      .where('creatorId', '=', userId)
       .where('workspaceId', '=', workspaceId)
       .where('deletedAt', 'is', null)
       .executeTakeFirst();

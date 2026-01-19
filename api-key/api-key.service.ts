@@ -31,14 +31,15 @@ export class ApiKeyService {
       throw new Error('User not found');
     }
 
-    // Check if an active API key with the same name already exists
-    const existingKey = await this.apiKeyRepo.findByNameAndWorkspace(
+    // Check if the user already has an active API key with the same name
+    const existingKey = await this.apiKeyRepo.findByNameAndUser(
       data.name,
+      userId,
       workspaceId,
     );
     if (existingKey) {
       throw new Error(
-        `An API key with the name "${data.name}" already exists. Please use a different name.`,
+        `You already have an API key named "${data.name}". Please use a different name.`,
       );
     }
 
