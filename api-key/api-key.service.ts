@@ -31,6 +31,17 @@ export class ApiKeyService {
       throw new Error('User not found');
     }
 
+    // Check if an active API key with the same name already exists
+    const existingKey = await this.apiKeyRepo.findByNameAndWorkspace(
+      data.name,
+      workspaceId,
+    );
+    if (existingKey) {
+      throw new Error(
+        `An API key with the name "${data.name}" already exists. Please use a different name.`,
+      );
+    }
+
     // Create API key record first
     const apiKey = await this.apiKeyRepo.create({
       name: data.name,

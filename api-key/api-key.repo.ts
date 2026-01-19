@@ -26,6 +26,16 @@ export class ApiKeyRepo {
       .execute();
   }
 
+  async findByNameAndWorkspace(name: string, workspaceId: string) {
+    return await this.db
+      .selectFrom('apiKeys')
+      .selectAll()
+      .where('name', '=', name)
+      .where('workspaceId', '=', workspaceId)
+      .where('deletedAt', 'is', null)
+      .executeTakeFirst();
+  }
+
   async create(data: {
     name: string;
     creatorId: string;
